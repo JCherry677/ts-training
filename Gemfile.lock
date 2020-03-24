@@ -53,7 +53,7 @@ GEM
     nokogiri (1.8.0)
       mini_portile2 (~> 2.2.0)
     popper_js (1.11.1)
-    rack (2.0.3)
+    rack (2.2.2)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails-dom-testing (2.0.3)
