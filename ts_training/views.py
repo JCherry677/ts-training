@@ -78,6 +78,7 @@ class TrainingDetailView(generic.DetailView):
 	model = Training_spec
 	context_object_name = "item"
 
+
 class SessionView(generic.ListView):
 	template_name = "ts_training/session.html"
 	model = Training_session
@@ -130,6 +131,7 @@ class PlanView(generic.ListView):
 		sessions = Planned_session.objects.order_by('-date')
 		return sessions 
 	context_object_name = "sessions"
+
 
 class PlanSingleView(generic.DetailView):
 	model = Planned_session

@@ -17,74 +17,99 @@
 
 <form role="form" method="POST" class="form-inline">
 	{% csrf_token %}
-	<div class="card mx-auto">
-		<div class="card-header bg-primary">
-			<div class="row">
-				<div class="col-sm-3 col-12 my-2 my-sm-0 text-center text-sm-left">
-					<a href="{% if object.pk %}{% url 'ts_training:ntPlanSingle' object.pk %}{% else %}{% url 'ts_training:ntPlan' %}{% endif %}" class="btn btn-secondary btn-lg"><i class="fa fa-fw fa-lg fa-arrow-left"></i> <span class="d-sm-none d-lg-inline">Cancel</span></a>
-				</div>
-				<div class="col-sm-6 col-12 text-center mt-1">
-					<h3 class="text-center mt-1">Signup for Session {{ object.pk }}</h3>
-				</div>
-				<div class="col-sm-3 col-12 text-center text-sm-right my-2 my-sm-0">
-					<button class="btn btn-lg btn-secondary" role="button" type="submit"><i class="fa fa-fw fa-check"></i> <span class="d-sm-none d-lg-inline">Submit</span></button>
-				</div>
-			</div>
-		</div>
-		<div class="card-body">
-			<div class="row mb-4">
-				<div class="col-12">
-					<div class="card">
-						<div class="card-header bg-primary">
-							<h4><i class="fa fa-fw fa-users nt-orange"></i> Sign Up</h4>
+	{% if not user == object.trainer %}
+		{% if not user in object.signed_up.all%}
+			<div class="card mx-auto">
+				<div class="card-header bg-primary">
+					<div class="row">
+						<div class="col-sm-3 col-12 my-2 my-sm-0 text-center text-sm-left">
+							<a href="{% if object.pk %}{% url 'ts_training:ntPlanSingle' object.pk %}{% else %}{% url 'ts_training:ntPlan' %}{% endif %}" class="btn btn-secondary btn-lg"><i class="fa fa-fw fa-lg fa-arrow-left"></i> <span class="d-sm-none d-lg-inline">Cancel</span></a>
 						</div>
-						<div class="card-body">
-							{% if object.slots > 0 %}
-								<p style="text-align: center;">You are signing up for a training session on {{ object.date }}. Please select your name and confirm with the Submit button</p>
-								{% all_people as people %}
-								<div class="row" id="peopleList">
-									{% for person in people %}
-										{% if person == user %}
-											<div class="col-xl-3 col-lg-4 col-md-6 col-12 mx-auto button-people person-{{ person.status }} {% if person.committee == True %}person-committee{% endif %}">
-												{% with form.signed_up|return_item:forloop.counter0 as trainee_form %}
-												<label class="label-block"><!-- So the whole button activates the checkbox, and is full-width on small viewports -->
-													<div class="btn btn-primary btn-block button-checkbox btn-sm">
-														<h5>
-															<div class="row">
-																<div class="col">
-																	<i class="fa fa-fw {% if person.status == 'GRAD' %}fa-graduation-cap{% elif person.committee == True %}fa-committee fa-star{% else %}fa-user{% endif %} float-left mt-1"></i>&nbsp;
-																	<div class="d-inline-block w-50 lead small person-checkbox"><span class="d-none">{{ trainee_form.tag }}</span>{{ person }}&nbsp;</div>
-																	<i class="fa fa-fw fa-circle-o button-checkbox-icon float-right mt-1"></i>
-																</div>
-															</div>
-														</h5>
-													</div>
-												</label>
-												{% endwith %}
-											</div>
-										{% endif %}
-									{% endfor %}
+						<div class="col-sm-6 col-12 text-center mt-1">
+							<h3 class="text-center mt-1">Signup for Session {{ object.pk }}</h3>
+						</div>
+						<div class="col-sm-3 col-12 text-center text-sm-right my-2 my-sm-0">
+							<button class="btn btn-lg btn-secondary" role="button" type="submit"><i class="fa fa-fw fa-check"></i> <span class="d-sm-none d-lg-inline">Submit</span></button>
+						</div>
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="row mb-4">
+						<div class="col-12">
+							<div class="card">
+								<div class="card-header bg-primary">
+									<h4><i class="fa fa-fw fa-users nt-orange"></i> Sign Up</h4>
 								</div>
-							{% else %}
-								<p>This training session is full. Please sign up for another session.</p>
-							{% endif %}
+								<div class="card-body">
+									{% if object.slots > 0 %}
+										<p style="text-align: center;">You are signing up for a training session on {{ object.date }}. Please select your name and confirm with the Submit button</p>
+										{% all_people as people %}
+										<div class="row" id="peopleList">
+											{% for person in people %}
+												{% if person == user %}
+													<div class="col-xl-3 col-lg-4 col-md-6 col-12 mx-auto button-people person-{{ person.status }} {% if person.committee == True %}person-committee{% endif %}">
+														{% with form.signed_up|return_item:forloop.counter0 as trainee_form %}
+														<label class="label-block"><!-- So the whole button activates the checkbox, and is full-width on small viewports -->
+															<div class="btn btn-primary btn-block button-checkbox btn-sm">
+																<h5>
+																	<div class="row">
+																		<div class="col">
+																			<i class="fa fa-fw {% if person.status == 'GRAD' %}fa-graduation-cap{% elif person.committee == True %}fa-committee fa-star{% else %}fa-user{% endif %} float-left mt-1"></i>&nbsp;
+																			<div class="d-inline-block w-50 lead small person-checkbox"><span class="d-none">{{ trainee_form.tag }}</span>{{ person }}&nbsp;</div>
+																			<i class="fa fa-fw fa-circle-o button-checkbox-icon float-right mt-1"></i>
+																		</div>
+																	</div>
+																</h5>
+															</div>
+														</label>
+														{% endwith %}
+													</div>
+												{% endif %}
+											{% endfor %}
+										</div>
+									{% else %}
+										<p>This training session is full. Please sign up for another session.</p>
+									{% endif %}
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		{% if user.is_staff %}
-		<div class="card-footer bg-primary">
-			<div class="row">
-				<div class="col-sm-8 col-4">
-					<a href="{% url 'ts_training:ntPlan' %}" class="btn btn-secondary btn-lg"><i class="fa fa-fw fa-lg fa-list"></i> <span class="d-none d-sm-inline">Back to all sessions</span></a>
+		{% else %}
+			<div class="card mx-auto" style="width: 75% !important;">
+				<div class="card-header bg-primary">
+					<div class="row">
+						<div class="col-sm-3 col-12 my-2 my-sm-0 text-center text-sm-left">
+							<a href="{% if object.pk %}{% url 'ts_training:ntPlanSingle' object.pk %}{% else %}{% url 'ts_training:ntPlan' %}{% endif %}" class="btn btn-secondary btn-lg"><i class="fa fa-fw fa-lg fa-arrow-left"></i> <span class="d-sm-none d-lg-inline">Cancel</span></a>
+						</div>
+						<div class="col-sm-6 col-12 text-center mt-1">
+							<h3 class="text-center mt-1">Signup for Session {{ object.pk }}</h3>
+						</div>
+					</div>
 				</div>
-				<div class="col-sm-4 col-8 text-right">
-					<button class="btn btn-lg btn-secondary" style="white-space:nowrap;" role="button" type="submit"><i class="fa fa-fw fa-check"></i> Submit</button>
+				<div class="card-body mx-auto">
+					<p>You are already signed up for this training session!</p>
 				</div>
 			</div>
-		</div>
 		{% endif %}
-	</div>
+	{% else %}
+		<div class="card mx-auto" style="width: 75% !important;">
+			<div class="card-header bg-primary">
+				<div class="row">
+					<div class="col-sm-3 col-12 my-2 my-sm-0 text-center text-sm-left">
+						<a href="{% if object.pk %}{% url 'ts_training:ntPlanSingle' object.pk %}{% else %}{% url 'ts_training:ntPlan' %}{% endif %}" class="btn btn-secondary btn-lg"><i class="fa fa-fw fa-lg fa-arrow-left"></i> <span class="d-sm-none d-lg-inline">Cancel</span></a>
+					</div>
+					<div class="col-sm-6 col-12 text-center mt-1">
+						<h3 class="text-center mt-1">Signup for Session {{ object.pk }}</h3>
+					</div>
+				</div>
+			</div>
+			<div class="card-body mx-auto">
+				<p>You are the trainer and so cannot sign up for this session!</p>
+			</div>
+		</div>
+	{% endif %}
 </form>
 
 {% endblock %}
