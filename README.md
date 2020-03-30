@@ -13,8 +13,8 @@ In order to create items in the Menu you'll need to make a new Page Icon type in
 # Running locally 
 
 You will need: 
-* Django 1.11.17 
-* Python 3.6.1 (and Pip) 
+* Django 3.0.4
+* Python 3.6.10 (and Pip) 
 * Ruby and Rubygems (for Bootstrap 4, Sass and Compass)
 
 ## Installation 
@@ -26,7 +26,7 @@ virtualenv <dir>
 ``` 
 
 Where `<dir>` is a given directory; something like `training` or `venv`
-Ensure the Python version is 3.5 (if it is not the default) by running `virtualenv <dir> --python=python3.5` or similar. 
+Ensure the Python version is 3.6 (if it is not the default) by running `virtualenv <dir> --python=python3.6` or similar. 
 #### Activate the virtualenv 
 
 ```
@@ -70,4 +70,4 @@ to recompile after every save of a Sass file.
 
 # Help 
 
-The [Django documentation](https://docs.djangoproject.com/en/1.11/) is a good place to start.
+The [Django documentation](https://docs.djangoproject.com/en/3.0/) is a good place to start.
