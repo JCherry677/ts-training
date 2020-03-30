@@ -181,15 +181,14 @@ class Training_session(models.Model):
         default = datetime.date.today
     )
 
-    #@property
-    #def __str__(self):
-    #    trainees = []
-    #    for person in self.trainee.all():
-    #        name = str.title(person.first_name) + ' ' + (str.title(person.last_name))
-    #        trainees.append(name)
-    #    string = str.title(self.trainer.first_name + ' ' + self.trainer.last_name) + ' taught ' \
-    #             + ', '.join(map(str, trainees))
-    #    return string
+    def __str__(self):
+        trainees = []
+        for person in self.trainee.all():
+            name = str.title(person.first_name) + ' ' + (str.title(person.last_name))
+            trainees.append(name)
+        string = str.title(self.trainer.first_name + ' ' + self.trainer.last_name) + ' taught ' \
+                 + ', '.join(map(str, trainees))
+        return string
 
     def get_absolute_url(self):
      	return reverse('ts_training:ntSessions', kwargs={'pk': self.pk})
@@ -206,8 +205,8 @@ class Planned_session(models.Model):
         default = timezone.now
     )
     signed_up = models.ManyToManyField(Person, related_name="signed_up", blank=True)
-    #@property
-    #def __str__(self):
-    #    words = 'Session has ' + str(self.slots)  + ' slots available on ' + str(self.date)
-    #    return words
+
+    def __str__(self):
+        words = 'Session has '+ str(self.slots)  + ' slots available on ' + str(self.date)
+        return words
     

@@ -144,7 +144,7 @@ class PlanNewView(SuccessMessageMixin, CreateView):
 	success_message = "Session created successfully."
 
 	def get_success_url(self):
-		return reverse_lazy('ts_training:ntSessionSingle', kwargs={'pk': self.object.pk })
+		return reverse_lazy('ts_training:ntPlanSingle', kwargs={'pk': self.object.pk })
 
 
 @method_decorator(login_required, name='dispatch')

@@ -105,7 +105,7 @@ class TrainingSpecAdmin(admin.ModelAdmin):
 
 
 class TrainingSessionAdmin(admin.ModelAdmin):
-	list_display = ['trainer', '__str__', 'date', ]
+	list_display = ['__str__', 'date', ]
 	formfield_overrides = {
 		models.ManyToManyField: {'widget': CheckboxSelectMultiple},
 	}
@@ -118,7 +118,7 @@ class IconAdmin(admin.ModelAdmin):
 	list_filter = ['itemType']
 
 class PlannedAdmin(admin.ModelAdmin):
-	list_display = ['date', '__str__', 'slots', ]
+	list_display = ['__str__', 'date', 'slots', ]
 	formfield_overrides = {
 		models.ManyToManyField: {'widget': CheckboxSelectMultiple},
 	}
