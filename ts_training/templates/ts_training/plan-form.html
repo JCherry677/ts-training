@@ -76,22 +76,8 @@
 						</div>
 						<div class="card-body">
 							<div class="col-12">
-								{% with object.signed_up.all as people %}
-									{% if people is None %}
-										<p> Noone has signed up yet!</p>
-									{% else %}
-										<!-- People -->
-										<div class="row" id="peopleList">
-											{% for person in people %}
-												<div class="col-xl-3 col-lg-4 col-6 button-people person-{{ person.status }} {% if person.committee == True %}person-committee{% endif %}">
-													<a href="{% url 'ts_training:ntPerson' person.slug %}" class="btn btn-primary btn-block">
-														<h6 class="lead"><i class="fa fa-fw {% if person.status == 'GRAD' %}fa-graduation-cap{% elif person.committee == True %}fa-committee fa-star{% else %}fa-user{% endif %} float-md-left mt-md-1"></i>&nbsp;{{ person }}</h6>
-													</a>
-												</div>												
-											{% endfor %}
-										</div>
-									{% endif %}
-								{% endwith %}
+								{% all_people as people %}
+								{% include 'ts_training/include/plan-people-list.html' %}
 							</div>
 						</div>
 					</div>
