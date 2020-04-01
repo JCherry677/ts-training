@@ -21,7 +21,7 @@ from django.views.generic.base import RedirectView
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 
 # DB Includes
-from .models import Icon, Person, Training_session, Training_spec, Planned_session
+from .models import Department, Category, Site_Page,  Person, Training_session, Training_spec, Planned_session
 
 # Forms
 from .forms import SessionForm, PlanForm, SignupForm
@@ -34,17 +34,13 @@ class PageNotFoundView(generic.ListView):
 
 
 class HomeView(generic.ListView):
-	model = Icon
+	model = Site_Page
 	template_name = "ts_training/index.html"
 	context_object_name = "page_list"
 
-	def get_queryset(self):
-		# Exclude training categories
-		return Icon.objects.filter(itemType='PAGE')
-
 
 class AboutView(generic.TemplateView):
-	model = Icon
+	model = Site_Page
 	template_name = "ts_training/about.html"
 
 
@@ -58,7 +54,8 @@ class PeopleView(generic.ListView):
 		# Get all the people. Lower required to allow for mixed-case in DB
 		context['people'] = Person.objects.all()
 		# Get the training categories
-		context['cats'] = Icon.objects.filter(itemType='CAT').order_by('weight').only('iconName')
+		context['cats'] = Category.objects.order_by('weight').only('iconName')
+		context['departments'] = Department.objects.all()
 		return context
 
 
@@ -87,6 +84,7 @@ class SessionView(generic.ListView):
 		today = datetime.date.today()
 		sessions = Training_session.objects.order_by('-date')
 		return sessions 
+	paginate_by = 24
 	context_object_name = "sessions"
 
 

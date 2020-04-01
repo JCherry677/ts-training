@@ -1,7 +1,7 @@
 from django import template
 from django.db import models 
 from django.db.models import Count
-from ..models import Icon, Person, Training_session, Training_spec
+from ..models import Department, Category, Person, Training_session, Training_spec
 
 register = template.Library() 
 
@@ -39,7 +39,6 @@ def tech_status(person, dept, count=False):
 	
 	Count returns a list with the two numbers, leaving the logic as the template's responsibility
 	Setting count=False returns a boolean: are all completed or not? This is for a future feature.
-
 	Future: Be able to filter people who have all of a department signed off.
 	'''
 	allspec = Training_spec.objects.select_related('category') # Get all training points
@@ -84,15 +83,12 @@ def training_cards(person=None, form=None, session_boxes=None):
 	Display a view of training split into cards for each department.
 	Person argument introduces colour-coding and counting based on 
 	the person's achieved training points
-
 	For a single view, session_boxes=object.trainingId.all (the boxes to be checked).
-
 	Site usage:
 		- Person: counters (expands), colour_bands, modals 
 		- Session: counters (expands), colour_bands, modals
 		- Session Form: checkboxes, 
 		- Else (training page): modals
-
 	'''
 
 	# Initial card settings
@@ -101,8 +97,11 @@ def training_cards(person=None, form=None, session_boxes=None):
 	# training point information modals; used when editing/creating a training session
 
 	#Get the data to iterate and compare with 
-	cats = Icon.objects.filter(itemType='CAT').order_by('weight')
+	cats = Category.objects.all().order_by('department','weight').select_related('department')
 	training = Training_spec.objects.all().order_by('trainingId').select_related('category')
+	departments = Department.objects.all().order_by('weight')
+	if not departments:
+		departments = ['no_depts']
 
 	if person is not None: 
 		# If we are dealing with a person, look at all the training they have been given
@@ -129,6 +128,7 @@ def training_cards(person=None, form=None, session_boxes=None):
 
 		return {
 			'card_settings': card_settings,
+			'departments': departments,
 			'cats': cats, # All categories
 			'training': training, # All training 
 			'person': person, # The person 
@@ -142,6 +142,7 @@ def training_cards(person=None, form=None, session_boxes=None):
 
 		return {
 			'card_settings': card_settings,
+			'departments': departments,
 			'cats': cats, # All categories
 			'training': training, # All training
 			'session_boxes': session_boxes # The training covered 
@@ -154,6 +155,7 @@ def training_cards(person=None, form=None, session_boxes=None):
 
 		return {
 			'card_settings': card_settings, 
+			'departments': departments,
 			'cats': cats, # All categories
 			'training': training, # All training 
 			'form': form 
@@ -165,13 +167,13 @@ def training_cards(person=None, form=None, session_boxes=None):
 
 		return { 
 			'card_settings': card_settings,
+			'departments': departments,
 			'cats': cats,
 			'training': training,
 		}
 
 ''' 
 	Old version:
-
 	if person is not None:
 		personTraining = Training_session.objects.filter(trainee=person).prefetch_related('trainingId')
 		achievedPoints = []

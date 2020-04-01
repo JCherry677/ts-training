@@ -8,7 +8,7 @@ from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
 from ts_training.models import Person
 
-from .models import Icon, Person, Training_session, Training_spec, Planned_session
+from .models import Department, Category, Site_Page,  Person, Training_session, Training_spec, Planned_session
 
 ## This section deals with the custom User type
 # User Forms
@@ -112,10 +112,39 @@ class TrainingSessionAdmin(admin.ModelAdmin):
 	list_filter = ['date','trainee','trainer']
 
 
-class IconAdmin(admin.ModelAdmin):
+# Dynamic actions for adding bulk adding categories to departments
+# Creates actions by iterating over the departments 
+def add_to_dept_action(department):
+	def add_to_dept(modeladmin, request, queryset):
+		for category in queryset: 
+			setattr(category, 'department', department)
+			category.save() 
+			messages.info(request, "{0} added to {1}.".format(category, department))
+
+	add_to_dept.short_description = "Add to {0}".format(department)
+	add_to_dept.__name__ = "add_to_dept_{0}".format(department.pk) #Each action must be uniquely named
+
+	return add_to_dept
+
+class CategoryAdmin(admin.ModelAdmin):
 	prepopulated_fields = {"description": ("iconName",)}
-	list_display = ['itemType', 'weight', 'iconName', 'iconRef']
-	list_filter = ['itemType']
+	list_display = ['department', 'weight', 'iconName', 'iconRef']
+
+	def get_actions(self, request):
+		actions = super(CategoryAdmin, self).get_actions(request)
+
+		if Department.objects.all():
+			for dept in Department.objects.all():
+				action = add_to_dept_action(dept)
+				actions[action.__name__] = (action, action.__name__, action.short_description)
+
+		return actions
+
+class Site_Page_Admin(admin.ModelAdmin):
+	list_display = ['page_title', 'weight', 'iconRef']
+
+class DepartmentAdmin(admin.ModelAdmin):
+	list_display = ['name', 'department_icon', 'person', 'email', 'weight']
 
 class PlannedAdmin(admin.ModelAdmin):
 	list_display = ['__str__', 'date', 'slots', ]
@@ -128,7 +157,9 @@ class PlannedAdmin(admin.ModelAdmin):
 admin.site.register(Person, PersonAdmin)
 admin.site.register(Training_session, TrainingSessionAdmin)
 admin.site.register(Training_spec, TrainingSpecAdmin)
-admin.site.register(Icon, IconAdmin)
+admin.site.register(Site_Page, Site_Page_Admin)
+admin.site.register(Category, CategoryAdmin)
+admin.site.register(Department, DepartmentAdmin)
 admin.site.register(Planned_session, PlannedAdmin)
 #Groups are not needed due to custom User type
 admin.site.unregister(Group)
