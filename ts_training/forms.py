@@ -96,5 +96,6 @@ class SignupForm(forms.ModelForm):
 
 	def clean(self):
 		cleaned_data = super(SignupForm, self).clean()
-		self.instance.slots = self.instance.slots - 1
+		print(self.instance.signed_up.count())
+		#self.instance.slots = self.instance.slots - 1
 		return cleaned_data

@@ -111,7 +111,7 @@
 									<p>This training session is full. Please sign up for another session.</p>
 								{% endif %}
 							{% else %}
-								<p> You are already signed up to this session</p>
+							<a href="{% url 'ts_training:ntSignup' object.pk %}" class="btn btn-secondary btn-lg"><i class="fa fa-fw fa-lg fa-clipboard"></i> <span class="d-sm-none d-lg-inline">Cancel Sign Up</span></a>
 							{% endif %}
 						</div>
 					</div>

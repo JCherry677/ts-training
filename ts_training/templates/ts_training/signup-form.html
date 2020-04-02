@@ -18,7 +18,6 @@
 <form role="form" method="POST" class="form-inline">
 	{% csrf_token %}
 	{% if not user == object.trainer %}
-		{% if not user in object.signed_up.all%}
 			<div class="card mx-auto">
 				<div class="card-header bg-primary">
 					<div class="row">
@@ -42,7 +41,11 @@
 								</div>
 								<div class="card-body">
 									{% if object.slots > 0 %}
-										<p style="text-align: center;">You are signing up for a training session on {{ object.date }}. Please select your name and confirm with the Submit button</p>
+										{% if not user in object.signed_up.all%}
+											<p style="text-align: center;">You are signing up for a training session on {{ object.date }}. Please select your name and confirm with the Submit button</p>
+										{% else %}
+											<p style="text-align: center;">You are already signed up for the training session on {{ object.date }}. <strong>To cancel signup, please deselect your name below</strong></p>
+										{% endif %}
 										{% all_people as people %}
 										<div class="row" id="peopleList">
 											{% for person in people %}
@@ -76,23 +79,6 @@
 					</div>
 				</div>
 			</div>
-		{% else %}
-			<div class="card mx-auto" style="width: 75% !important;">
-				<div class="card-header bg-primary">
-					<div class="row">
-						<div class="col-sm-3 col-12 my-2 my-sm-0 text-center text-sm-left">
-							<a href="{% if object.pk %}{% url 'ts_training:ntPlanSingle' object.pk %}{% else %}{% url 'ts_training:ntPlan' %}{% endif %}" class="btn btn-secondary btn-lg"><i class="fa fa-fw fa-lg fa-arrow-left"></i> <span class="d-sm-none d-lg-inline">Cancel</span></a>
-						</div>
-						<div class="col-sm-6 col-12 text-center mt-1">
-							<h3 class="text-center mt-1">Signup for Session {{ object.pk }}</h3>
-						</div>
-					</div>
-				</div>
-				<div class="card-body mx-auto">
-					<p>You are already signed up for this training session!</p>
-				</div>
-			</div>
-		{% endif %}
 	{% else %}
 		<div class="card mx-auto" style="width: 75% !important;">
 			<div class="card-header bg-primary">
