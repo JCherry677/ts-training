@@ -5,7 +5,7 @@
 {% block content %}
 	{% if user.is_authenticated %}
 		<div class="alert alert-warning text-center" role="alert">
-			<p><i class="fa fa-fw fa-exclamation-circle"></i> You are already logged in. Try going to the <a href="{% url 'ts_training:ntHome' %}" class="alert-link">home page</a> instead. Or, <a href="{% url 'ts_training:ntLogout' %}" class="alert-link">logout</a>.</p>
+			<p><i class="fa fa-fw fa-exclamation-circle"></i> You are already logged in. Try going to the <a href="{% url 'ts_training:Home' %}" class="alert-link">home page</a> instead. Or, <a href="{% url 'ts_training:Logout' %}" class="alert-link">logout</a>.</p>
 			<p>You may have come to this page in error, or because your account does not have the privileges to do whatever it is you just tried.</p>
 		</div>
 	{% else %}
@@ -25,7 +25,7 @@
 		{# Actual login form #}
 		<div class="row">
 			<div class="col">
-				<form method="post" action="{% url 'ts_training:ntLogin' %}">
+				<form method="post" action="{% url 'ts_training:Login' %}">
 					{% csrf_token %}
 					{% for field in form %}
 						<div class="row form-group">

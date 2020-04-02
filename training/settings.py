@@ -190,9 +190,9 @@ LOGGING = {
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 # Auth Settings
-LOGIN_URL = 'ts_training:ntLogin'
-LOGIN_REDIRECT_URL = 'ts_training:ntHome'
-LOGOUT_REDIRECT_URL = 'ts_training:ntHome'
+LOGIN_URL = 'ts_training:Login'
+LOGIN_REDIRECT_URL = 'ts_training:Home'
+LOGOUT_REDIRECT_URL = 'ts_training:Home'
 #Custom user Model
 AUTH_USER_MODEL = 'ts_training.Person'
 

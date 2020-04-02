@@ -28,7 +28,7 @@
     {% for person in people %}
         {% if form is None %}
             <div class="col-xl-3 col-lg-4 col-6 button-people person-{{ person.status }} {% if person.committee == True %}person-committee{% endif %}">
-                <a href="{% url 'ts_training:ntPerson' person.slug %}" class="btn btn-primary btn-block">
+                <a href="{% url 'ts_training:Person' person.slug %}" class="btn btn-primary btn-block">
                     <h6 class="lead"><i class="fa fa-fw {% if person.status == 'GRAD' %}fa-graduation-cap{% elif person.committee == True %}fa-committee fa-star{% else %}fa-user{% endif %} float-md-left mt-md-1"></i>&nbsp;{{ person }}</h6>
                 </a>
             </div>

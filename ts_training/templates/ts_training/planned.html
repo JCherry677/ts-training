@@ -6,16 +6,18 @@
 {% block content %}
 
     <h1 class="text-center">Upcoming Training Sessions</h1>
-    {% if user.is_admin %}
-		<div class="row mb-2">
-			<div class="col-12">
-				<a role="button" href="{% url 'ts_training:ntPlanNew' %}" class="btn btn-primary float-right"><i class="fa fa-fw fa-plus"></i> Plan New Session</a>
-			</div>
+	<div class="row mb-12">
+		<div class="col-6">
+			<a role="button" href="{% url 'ts_training:Sessions' %}" class="btn btn-primary float-left"><i class="fa fa-fw fa-list"></i> View Previous Sessions</a>
 		</div>
-	{% endif %}
-
-
-	<div class="row">
+		{% if user.is_admin %}
+			<div class="col-6">
+				<a role="button" href="{% url 'ts_training:PlanNew' %}" class="btn btn-primary float-right"><i class="fa fa-fw fa-plus"></i> Plan New Session</a>
+			</div>
+		{% endif %}
+	</div>
+	<br>
+	<div class="row mb-4">
 		<div class="col">
 			{% if not sessions %}
 				<p class="text-center text-muted"><i class="fa fa-info-circle fa-fw"></i> No Planned training sessions.</p>

@@ -20,14 +20,14 @@
 		<div class="card-header bg-primary">
 			<div class="row">
 				<div class="col-sm-3 col-12 my-2 my-sm-0 text-center text-sm-left">
-			    <a href="{% url 'ts_training:ntPlan' %}" class="btn btn-secondary btn-lg"><i class="fa fa-fw fa-lg fa-list"></i> <span class="d-sm-none d-lg-inline">Planned sessions</span></a>
+			    <a href="{% url 'ts_training:Plan' %}" class="btn btn-secondary btn-lg"><i class="fa fa-fw fa-lg fa-list"></i> <span class="d-sm-none d-lg-inline">Planned sessions</span></a>
 			  </div>
 				<div class="col-sm-6 col-12 text-center mt-1">
 					<h3 class="">Planned Session on {{ object.date }}</h3>
 				</div>
 				{% if user.is_admin %}
 				  <div class="col-sm-3 col-12 text-center text-sm-right my-2 my-sm-0">
-				    <a href="{% url 'ts_training:ntPlanEdit' object.pk %}" class="btn btn-secondary btn-lg"><i class="fa fa-fw fa-lg fa-pencil"></i> <span class="d-sm-none d-lg-inline">Edit</span></a>
+				    <a href="{% url 'ts_training:PlanEdit' object.pk %}" class="btn btn-secondary btn-lg"><i class="fa fa-fw fa-lg fa-pencil"></i> <span class="d-sm-none d-lg-inline">Edit</span></a>
 				  </div>
 				{% endif %}
 			</div>
@@ -42,7 +42,7 @@
 						<div class="card-body">
 							<div class="row text-center text-sm-left">
 								<div class="col-12 col-sm-4">
-									<h5>Training Lead: <a href="{% url 'ts_training:ntPerson' object.trainer.slug %}">{{ object.trainer }}</a></h5>
+									<h5>Training Lead: <a href="{% url 'ts_training:Person' object.trainer.slug %}">{{ object.trainer }}</a></h5>
 								</div>
 								<div class="col-12 col-sm-4">
 									<h5>Available Slots: {{object.slots}}</h5>
@@ -83,7 +83,7 @@
 										<div class="row" id="peopleList">
 											{% for person in people %}
 												<div class="col-xl-3 col-lg-4 col-6 button-people person-{{ person.status }} {% if person.committee == True %}person-committee{% endif %}">
-													<a href="{% url 'ts_training:ntPerson' person.slug %}" class="btn btn-primary btn-block">
+													<a href="{% url 'ts_training:Person' person.slug %}" class="btn btn-primary btn-block">
 														<h6 class="lead"><i class="fa fa-fw {% if person.status == 'GRAD' %}fa-graduation-cap{% elif person.committee == True %}fa-committee fa-star{% else %}fa-user{% endif %} float-md-left mt-md-1"></i>&nbsp;{{ person }}</h6>
 													</a>
 												</div>												
@@ -91,6 +91,18 @@
 										</div>
 									{% endif %}
 								{% endwith %}
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row mb-4">
+					<div class="col-12">
+						<div class="card">
+							<div class="card-header bg-primary">
+								<p>Test</p>
+							</div>
+							<div class="card-body">
+								<a class="" href="{% url 'ts_training:CreateSession' object.pk %}">Test</a>
 							</div>
 						</div>
 					</div>
@@ -106,12 +118,12 @@
 						<div class="card-body mx-auto">
 							{% if not user in object.signed_up.all%}
 								{% if object.slots > 0 %}
-									<a href="{% url 'ts_training:ntSignup' object.pk %}" class="btn btn-secondary btn-lg"><i class="fa fa-fw fa-lg fa-clipboard"></i> <span class="d-sm-none d-lg-inline">Sign Up</span></a>
+									<a href="{% url 'ts_training:Signup' object.pk %}" class="btn btn-secondary btn-lg"><i class="fa fa-fw fa-lg fa-clipboard"></i> <span class="d-sm-none d-lg-inline">Sign Up</span></a>
 								{% else %}
 									<p>This training session is full. Please sign up for another session.</p>
 								{% endif %}
 							{% else %}
-							<a href="{% url 'ts_training:ntSignup' object.pk %}" class="btn btn-secondary btn-lg"><i class="fa fa-fw fa-lg fa-clipboard"></i> <span class="d-sm-none d-lg-inline">Cancel Sign Up</span></a>
+							<a href="{% url 'ts_training:Signup' object.pk %}" class="btn btn-secondary btn-lg"><i class="fa fa-fw fa-lg fa-clipboard"></i> <span class="d-sm-none d-lg-inline">Cancel Sign Up</span></a>
 							{% endif %}
 						</div>
 					</div>

@@ -59,36 +59,36 @@ class Test_NT_Home(TestCase):
 
 	### Should render as 200
 	def test_nt_home200(self):
-		url = reverse('ts_training:ntHome')
+		url = reverse('ts_training:Home')
 		response = self.client.get(url)
 		self.assertEqual(response.status_code, 200)
 
 	### Should not list category icons
 	def test_nt_iconCat(self):
 		icon = addIcon('CAT','lighting','Lighting',1,True,'lighting fixtures and instruments')
-		setattr(icon, 'viewName', 'ntPeople') 
+		setattr(icon, 'viewName', 'People') 
 		icon.save()
-		url = reverse('ts_training:ntHome')
+		url = reverse('ts_training:Home')
 		response = self.client.get(url)
 		self.assertNotContains(response,icon.description)
 
 	### Should list pages with icons
 	def test_nt_iconPage(self):
 		icon = addIcon('PAGE','fa fa-users','People',1,True,'all the users')
-		setattr(icon, 'viewName', 'ntPeople')
+		setattr(icon, 'viewName', 'People')
 		icon.save()		
 		
-		url = reverse('ts_training:ntHome')
+		url = reverse('ts_training:Home')
 		response = self.client.get(url)
 		self.assertContains(response,icon.description)
 
 	### If there is both, should only list pages
 	def test_nt_iconCatPage(self):
 		iconPage = addIcon('PAGE','people','People',1,True,'details about the users')
-		setattr(iconPage, 'viewName', 'ntPeople') 
+		setattr(iconPage, 'viewName', 'People') 
 		iconPage.save() 
 		iconCAT = addIcon('CAT','lighting','Specific Category',1,True,'lighting fixtures and instruments')
-		url = reverse('ts_training:ntHome')
+		url = reverse('ts_training:Home')
 		response = self.client.get(url)
 		self.assertNotContains(response,iconCAT.description)
 		self.assertNotContains(response,iconCAT.iconName) # Ensure it's not in the nav bar
@@ -97,12 +97,12 @@ class Test_NT_Home(TestCase):
 	### Only display primary pages in panels
 	def test_nt_iconPrimaryPage(self):
 		iconPrimary = addIcon('PAGE','people','People',1,True,'details about the users')
-		setattr(iconPrimary, 'viewName', 'ntPeople') 
+		setattr(iconPrimary, 'viewName', 'People') 
 		iconPrimary.save() 
 		iconNot = addIcon('PAGE', 'about', 'About', 2, False, 'about this site')
-		setattr(iconNot, 'viewName', 'ntAbout')
+		setattr(iconNot, 'viewName', 'About')
 		iconNot.save()
-		url = reverse('ts_training:ntHome')
+		url = reverse('ts_training:Home')
 		response = self.client.get(url)
 		self.assertNotContains(response,iconNot.description)
 		self.assertContains(response,iconPrimary.description)	
@@ -119,14 +119,14 @@ class Test_NT_Training_Category(TestCase):
 	'''
 	### Should render as 200
 	def test_nt_category200(self):
-		url = reverse('ts_training:ntCategory')
+		url = reverse('ts_training:Category')
 		response = self.client.get(url)
 		self.assertEqual(response.status_code, 200)
 
 	### Should show labels 
 	def test_nt_categoryJumpLabels(self):
 		iconLighting = addIcon('CAT','lightbulb-o','Lighting',1,True,'')
-		url = reverse('ts_training:ntCategory')
+		url = reverse('ts_training:Category')
 		response = self.client.get(url)
 		testString = '<p>Jump to: <a href="#Lighting" title="Lighting" class="filter label label-info">Lighting</a>'
 		self.assertContains(response, testString)
@@ -134,7 +134,7 @@ class Test_NT_Training_Category(TestCase):
 	### Should show all categories, regardless of training within
 	def test_nt_categoryIcons(self):
 		iconLighting = addIcon('CAT','lightbulb-o','Lighting',1,True,'')
-		url = reverse('ts_training:ntCategory')
+		url = reverse('ts_training:Category')
 		response = self.client.get(url)
 		testString = '<i class="fa fa-fw fa-lightbulb-o"></i> Lighting'
 		self.assertContains(response, testString)
@@ -145,7 +145,7 @@ class Test_NT_Training_Category(TestCase):
 		training1 = addToSpec('1.01',iconLighting,'Basic lanterns','fixture operations',False)
 		training2 = addToSpec('1.02',iconLighting,'Safe things','healthy safety basics',True)
 
-		url = reverse('ts_training:ntCategory')
+		url = reverse('ts_training:Category')
 		response = self.client.get(url)
 		self.assertContains(response, training1.trainingTitle)
 		self.assertContains(response, training2.trainingTitle)
@@ -158,7 +158,7 @@ class Test_NT_Training_Category(TestCase):
 	### Should display info message when there is no training
 	def test_nt_category_no_training(self):
 		iconLighting = addIcon('CAT','lightbulb-o','Lighting',1,True,'')
-		url = reverse('ts_training:ntCategory')
+		url = reverse('ts_training:Category')
 		response = self.client.get(url)
 		testString = '<i class="fa fa-info-circle fa-fw"></i> No training in this department.</td>'
 		self.assertContains(response, testString)
@@ -170,7 +170,7 @@ class Test_NT_Training_Category(TestCase):
 	### Should show a data table if there is training spec items
 	def test_nt_category_datatable(self):
 		#### Should show a message if there is none 
-		url = reverse('ts_training:ntCategory')
+		url = reverse('ts_training:Category')
 		response = self.client.get(url)
 		testString = '<p><i class="fa fa-info-circle fa-fw"></i> There is no training.</p>'
 		self.assertContains(response, testString)
@@ -183,7 +183,7 @@ class Test_NT_Training_Category(TestCase):
 		nonetaught = 'This has not been taught by anyone.'
 		nonetrained = 'This has not been taught to anyone.'
 
-		url = reverse('ts_training:ntCategory')
+		url = reverse('ts_training:Category')
 		response = self.client.get(url)
 
 		self.assertContains(response, nonetaught)
@@ -195,7 +195,7 @@ class Test_NT_Training_Category(TestCase):
 		taughtTo = 'Has been taught to: <a href="/people/a-student/">'+str.title(trainee.first_name)
 		taughtBy = 'Has been taught by: <a href="/people/the-teacher/">'+str.title(trainer.first_name)
 
-		url = reverse('ts_training:ntCategory')
+		url = reverse('ts_training:Category')
 		response = self.client.get(url)
 		self.assertContains(response, taughtTo)
 		self.assertContains(response, taughtBy)
@@ -205,7 +205,7 @@ class Test_NT_People(TestCase):
 # Unit tests for the people list page
 	### Should render as 200
 	def test_nt_people200(self):
-		url = reverse('ts_training:ntPeople')
+		url = reverse('ts_training:People')
 		response = self.client.get(url)
 		self.assertEqual(response.status_code, 200)
 
@@ -215,7 +215,7 @@ class Test_NT_People(TestCase):
 		bill = createPerson('BiLL', 'PoTTs', 2016)
 		doc = createPerson('doctor', 'who', 1963)
 		cass = createPerson('cassandra',"o'brien", 2001)
-		url = reverse('ts_training:ntPeople')
+		url = reverse('ts_training:People')
 		response = self.client.get(url)
 		self.assertContains(response, str.title(joe.first_name))
 		self.assertContains(response, str.title(bill.first_name))
@@ -238,7 +238,7 @@ class Test_NT_People(TestCase):
 		session1 = addSession(training1,teach,joe,timezone.now())
 		session1.trainee.add(bill)
 
-		url = reverse('ts_training:ntPeople')
+		url = reverse('ts_training:People')
 
 		# At this point, no one has completed any department.
 		response = self.client.get(url)
@@ -255,7 +255,7 @@ class Test_NT_People(TestCase):
 	def test_nt_people_graduate(self):
 		## The people page should show graduated status, and nothing for non-graduates.
 		person = createPerson('joe','bloggs',2006)
-		url = reverse('ts_training:ntPeople')
+		url = reverse('ts_training:People')
 		gradString = 'fa-graduation-cap'
 		response = self.client.get(url)
 		self.assertNotContains(response, gradString)
@@ -272,21 +272,21 @@ class Test_NT_Person(TestCase):
 	def test_nt_person200GradPast(self):
 		## A person with a graduation year in the past will 200
 		p = createPerson('joe','bloggs',2009)
-		url = reverse('ts_training:ntPerson', args=(p.slug,))
+		url = reverse('ts_training:Person', args=(p.slug,))
 		response = self.client.get(url)
 		self.assertEqual(response.status_code, 200)
 
 	def test_nt_person200GradFuture(self):
 		## A person with a graduation year in the future will 200
 		p = createPerson('joe','bloggs',2999)
-		url = reverse('ts_training:ntPerson', args=(p.slug,))
+		url = reverse('ts_training:Person', args=(p.slug,))
 		response = self.client.get(url)
 		self.assertEqual(response.status_code, 200) 
 
 	def test_nt_person404(self):
 		## A url with no person will 404
 		p = 'joe-bloggs'
-		url = reverse('ts_training:ntPerson', args=(p,))
+		url = reverse('ts_training:Person', args=(p,))
 		response = self.client.get(url)
 		self.assertEqual(response.status_code, 404) 
 
@@ -300,7 +300,7 @@ class Test_NT_Person(TestCase):
 		
 		session1 = addSession(training1,teach,joe,timezone.now())
 
-		url = reverse('ts_training:ntPerson', args=(joe.slug,))
+		url = reverse('ts_training:Person', args=(joe.slug,))
 		response = self.client.get(url)
 
 		trainingGotString = '<tr class="clickme '+str(training1.category)+' success" data-toggle="modal" data-target="#'+str(training1.pk)+'-Modal"><td>'+str(training1.trainingId)+'</td>'
@@ -317,7 +317,7 @@ class Test_NT_Person(TestCase):
 
 		countString = '<label class="label label-danger">0 / '
 		# Also serves as testing for the colour, 0 has .label-warning
-		url = reverse('ts_training:ntPerson', args=(joe.slug,))
+		url = reverse('ts_training:Person', args=(joe.slug,))
 		response = self.client.get(url)
 		self.assertContains(response, countString)
 
@@ -334,7 +334,7 @@ class Test_NT_Person(TestCase):
 		# Also serves as testing for the colour: user < spec has .label-warning 
 		countString = '<label class="label label-warning">1 / 2'
 
-		url = reverse('ts_training:ntPerson', args=(joe.slug,))
+		url = reverse('ts_training:Person', args=(joe.slug,))
 		response = self.client.get(url)
 
 		self.assertContains(response, countString)
@@ -356,7 +356,7 @@ class Test_NT_Person(TestCase):
 		joe = createPerson('joe','bloggs',2009)
 		iconLighting = addIcon('CAT','lightbulb-o','Lighting',1,True,'')
 		countString = '0 / 0'
-		url = reverse('ts_training:ntPerson', args=(joe.slug,))
+		url = reverse('ts_training:Person', args=(joe.slug,))
 		response = self.client.get(url)
 		self.assertNotContains(response, countString)
 
@@ -366,7 +366,7 @@ class Test_NT_Person(TestCase):
 		setattr(graduate, 'status', 'GRAD') 
 		graduate.save()
 		gradString = '<i class="fa fa-fw fa-inverse fa-graduation-cap" aria-label="Graduated in ""></i>'
-		url = reverse('ts_training:ntPerson', args=(graduate.slug,))
+		url = reverse('ts_training:Person', args=(graduate.slug,))
 		response = self.client.get(url)
 		self.assertContains(response, gradString)
 
@@ -375,14 +375,14 @@ class Test_NT_Person(TestCase):
 		student = createPerson('joe','bloggs',2009)
 		setattr(student, 'status', 'STU') 
 		student.save()
-		url = reverse('ts_training:ntPerson', args=(student.slug,))
+		url = reverse('ts_training:Person', args=(student.slug,))
 		response = self.client.get(url)
 		self.assertContains(response, 'Student')
 
 	def test_nt_person_unknown(self):
 		## Should show unknown if unknown
 		person = createPerson('joe','bloggs',2009)
-		url = reverse('ts_training:ntPerson', args=(person.slug,))
+		url = reverse('ts_training:Person', args=(person.slug,))
 		response = self.client.get(url)
 		self.assertContains(response, 'Unknown')
 
@@ -395,20 +395,20 @@ class Test_NT_Person(TestCase):
 		iconLighting = addIcon('CAT','lightbulb-o','Lighting',1,True,'')
 		training1 = addToSpec(1.01,iconLighting,'Basic lanterns','fixture operations',False)
 
-		url = reverse('ts_training:ntPerson', args=(trainee.slug,))
+		url = reverse('ts_training:Person', args=(trainee.slug,))
 		response = self.client.get(url)
 		self.assertContains(response, 'has given no training')
 		self.assertContains(response, 'has received no training')
 
 		session1 = addSession(training1,trainer,trainee,timezone.now())
 		### Should show table when there is training received. Table will contain trainer's name
-		url = reverse('ts_training:ntPerson', args=(trainee.slug,))
+		url = reverse('ts_training:Person', args=(trainee.slug,))
 		response = self.client.get(url)
 		testString = str.title(trainer.last_name)+'</a></td>'
 		self.assertContains(response, testString)
 
 		### Should show table when there is training given. Table will contain trainee's name.
-		url = reverse('ts_training:ntPerson', args=(trainer.slug,))
+		url = reverse('ts_training:Person', args=(trainer.slug,))
 		response = self.client.get(url)
 		testString = str.title(trainee.last_name)+'</a></td>'
 		self.assertContains(response, testString)
@@ -418,14 +418,14 @@ class Test_NT_Sessions(TestCase):
 
 	### Should render as 200
 	def test_nt_sessions200(self):
-		url = reverse('ts_training:ntSessions')
+		url = reverse('ts_training:Sessions')
 		response = self.client.get(url)
 		self.assertEqual(response.status_code, 200)
 
 	### Should display message when there are no sessions, regardless of state of spec
 	def test_nt_sessions_none(self):
 		noneString = 'No training sessions.'
-		url = reverse('ts_training:ntSessions')
+		url = reverse('ts_training:Sessions')
 		response = self.client.get(url)
 		self.assertContains(response, noneString)
 
@@ -438,7 +438,7 @@ class Test_NT_Sessions(TestCase):
 	### Should display the trainer, trainee and training spec item when there is a session
 	def test_nt_sessions_some(self):
 		noneString = 'No training sessions.'
-		url = reverse('ts_training:ntSessions')
+		url = reverse('ts_training:Sessions')
 
 		p = createPerson('joe','bloggs',1990)
 		p2 = createPerson('the','teacher',1992)

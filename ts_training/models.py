@@ -244,7 +244,7 @@ class Training_session(models.Model):
         return string
 
     def get_absolute_url(self):
-     	return reverse('ts_training:ntSessions', kwargs={'pk': self.pk})
+     	return reverse('ts_training:Sessions', kwargs={'pk': self.pk})
 
     def get_students(self):
         return self.trainee.all().filter(status='STU')

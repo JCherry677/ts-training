@@ -105,7 +105,7 @@ def is_nt_staff(user):
 #	success_message = "Session created successfully."
 #
 #	def get_success_url(self):
-#		return reverse_lazy('ts_training:ntSessionSingle', kwargs={'pk': self.object.pk })
+#		return reverse_lazy('ts_training:SessionSingle', kwargs={'pk': self.object.pk })
 
 @method_decorator(login_required, name='dispatch')
 @method_decorator(user_passes_test(is_nt_staff), name='dispatch')
@@ -116,7 +116,7 @@ class SessionEditView(SuccessMessageMixin, UpdateView):
 	success_message = "Session edited successfully."
 
 	def get_success_url(self):
-		return reverse_lazy('ts_training:ntSessionSingle', kwargs={'pk': self.object.pk})
+		return reverse_lazy('ts_training:SessionSingle', kwargs={'pk': self.object.pk})
 
 ## Plans
 
@@ -144,7 +144,7 @@ class PlanNewView(SuccessMessageMixin, CreateView):
 	success_message = "Session created successfully."
 
 	def get_success_url(self):
-		return reverse_lazy('ts_training:ntPlanSingle', kwargs={'pk': self.object.pk })
+		return reverse_lazy('ts_training:PlanSingle', kwargs={'pk': self.object.pk })
 
 
 @method_decorator(login_required, name='dispatch')
@@ -156,7 +156,7 @@ class PlanEditView(SuccessMessageMixin, UpdateView):
 	success_message = "Session edited successfully."
 
 	def get_success_url(self):
-		return reverse_lazy('ts_training:ntPlanSingle', kwargs={'pk': self.object.pk})
+		return reverse_lazy('ts_training:PlanSingle', kwargs={'pk': self.object.pk})
 
 @method_decorator(login_required, name='dispatch')
 class SignupView(SuccessMessageMixin, UpdateView):
@@ -166,7 +166,19 @@ class SignupView(SuccessMessageMixin, UpdateView):
 	success_message = "You are Signed up"
 
 	def get_success_url(self):
-		return reverse_lazy('ts_training:ntPlanSingle', kwargs={'pk': self.object.pk})
+		return reverse_lazy('ts_training:PlanSingle', kwargs={'pk': self.object.pk})
+
+def CreateSessionView(request, pk):
+	#Doesn't Transfer Training points and People
+	plan = Planned_session.objects.get(pk=pk)
+	session = Training_session()
+	session.pk = None
+	session.trainer=plan.trainer
+	session.date=plan.date
+	session.save()
+	plan.delete()
+	return HttpResponseRedirect(reverse('ts_training:SessionEdit', args=(session.pk,)))
+
 
 # Auth Views
 
@@ -184,7 +196,7 @@ class NTUserEdit(auth_views.PasswordChangeView):
 	template_name = "ts_training/user-edit.html"
 
 	def get_success_url(self):
-		return reverse_lazy('ts_training:ntUserEditDone')
+		return reverse_lazy('ts_training:UserEditDone')
 
 
 class NTUserEditDone(auth_views.PasswordChangeDoneView):

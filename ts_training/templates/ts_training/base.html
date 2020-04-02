@@ -37,7 +37,7 @@
 		<nav class="navbar navbar-expand-md navbar-dark navbar-static-top mb-4">
 		  <div class="container">
 		  	<div class="col col-md-4">
-		      <a class="navbar-brand" href="{% url 'ts_training:ntHome' %}" style="height:auto">
+		      <a class="navbar-brand" href="{% url 'ts_training:Home' %}" style="height:auto">
 		        <img src="{% static 'img/TechSocLogo.png' %}" />
 		      </a>
 		    </div>
@@ -58,13 +58,13 @@
 		      				{% if user.is_staff %}
 		      					<li><a href="/admin" class="dropdown-item">Admin</a></li>
 		      				{% endif %}
-		      				<li><a href="{% url 'ts_training:ntUserEdit' %}" class="dropdown-item">Change password</a></li>
-		      				<li><a href="{% url 'ts_training:ntLogout' %}" class="dropdown-item">Logout</a></li>
+		      				<li><a href="{% url 'ts_training:UserEdit' %}" class="dropdown-item">Change password</a></li>
+		      				<li><a href="{% url 'ts_training:Logout' %}" class="dropdown-item">Logout</a></li>
 		      			</ul>
 		      		</li>
 		      	</div>
 		      	{% else %}
-		      		<li class="nav-item"><a href="{% url 'ts_training:ntLogin' %}?next={{ request.path }}" class="nav-link">Login</a></li>
+		      		<li class="nav-item"><a href="{% url 'ts_training:Login' %}?next={{ request.path }}" class="nav-link">Login</a></li>
 		      	{% endif %}
 		      </ul>
 		      <!-- Actual navbar buttons -->

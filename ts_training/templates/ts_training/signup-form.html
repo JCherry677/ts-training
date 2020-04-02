@@ -22,7 +22,7 @@
 				<div class="card-header bg-primary">
 					<div class="row">
 						<div class="col-sm-3 col-12 my-2 my-sm-0 text-center text-sm-left">
-							<a href="{% if object.pk %}{% url 'ts_training:ntPlanSingle' object.pk %}{% else %}{% url 'ts_training:ntPlan' %}{% endif %}" class="btn btn-secondary btn-lg"><i class="fa fa-fw fa-lg fa-arrow-left"></i> <span class="d-sm-none d-lg-inline">Cancel</span></a>
+							<a href="{% if object.pk %}{% url 'ts_training:PlanSingle' object.pk %}{% else %}{% url 'ts_training:Plan' %}{% endif %}" class="btn btn-secondary btn-lg"><i class="fa fa-fw fa-lg fa-arrow-left"></i> <span class="d-sm-none d-lg-inline">Cancel</span></a>
 						</div>
 						<div class="col-sm-6 col-12 text-center mt-1">
 							<h3 class="text-center mt-1">Signup for Session {{ object.pk }}</h3>
@@ -84,7 +84,7 @@
 			<div class="card-header bg-primary">
 				<div class="row">
 					<div class="col-sm-3 col-12 my-2 my-sm-0 text-center text-sm-left">
-						<a href="{% if object.pk %}{% url 'ts_training:ntPlanSingle' object.pk %}{% else %}{% url 'ts_training:ntPlan' %}{% endif %}" class="btn btn-secondary btn-lg"><i class="fa fa-fw fa-lg fa-arrow-left"></i> <span class="d-sm-none d-lg-inline">Cancel</span></a>
+						<a href="{% if object.pk %}{% url 'ts_training:PlanSingle' object.pk %}{% else %}{% url 'ts_training:Plan' %}{% endif %}" class="btn btn-secondary btn-lg"><i class="fa fa-fw fa-lg fa-arrow-left"></i> <span class="d-sm-none d-lg-inline">Cancel</span></a>
 					</div>
 					<div class="col-sm-6 col-12 text-center mt-1">
 						<h3 class="text-center mt-1">Signup for Session {{ object.pk }}</h3>

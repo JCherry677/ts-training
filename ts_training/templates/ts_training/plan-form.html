@@ -22,7 +22,7 @@
 		<div class="card-header bg-primary">
 			<div class="row">
 				<div class="col-sm-3 col-12 my-2 my-sm-0 text-center text-sm-left">
-					<a href="{% if object.pk %}{% url 'ts_training:ntPlanSingle' object.pk %}{% else %}{% url 'ts_training:ntPlan' %}{% endif %}" class="btn btn-secondary btn-lg"><i class="fa fa-fw fa-lg fa-arrow-left"></i> <span class="d-sm-none d-lg-inline">Cancel</span></a>
+					<a href="{% if object.pk %}{% url 'ts_training:PlanSingle' object.pk %}{% else %}{% url 'ts_training:Plan' %}{% endif %}" class="btn btn-secondary btn-lg"><i class="fa fa-fw fa-lg fa-arrow-left"></i> <span class="d-sm-none d-lg-inline">Cancel</span></a>
 				</div>
 				<div class="col-sm-6 col-12 text-center mt-1">
 					<h3 class="text-center mt-1">{% if object.pk %}Edit{%else%}New{%endif%} Training Session {{ object.pk }}</h3>
@@ -87,7 +87,7 @@
 		<div class="card-footer bg-primary">
 			<div class="row">
 				<div class="col-sm-8 col-4">
-					<a href="{% url 'ts_training:ntPlan' %}" class="btn btn-secondary btn-lg"><i class="fa fa-fw fa-lg fa-list"></i> <span class="d-none d-sm-inline">Back to all sessions</span></a>
+					<a href="{% url 'ts_training:Plan' %}" class="btn btn-secondary btn-lg"><i class="fa fa-fw fa-lg fa-list"></i> <span class="d-none d-sm-inline">Back to all sessions</span></a>
 				</div>
 				<div class="col-sm-4 col-8 text-right">
 					<button class="btn btn-lg btn-secondary" style="white-space:nowrap;" role="button" type="submit"><i class="fa fa-fw fa-check"></i> Submit</button>
