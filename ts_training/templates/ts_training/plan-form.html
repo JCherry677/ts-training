@@ -68,21 +68,23 @@
 					</div>
 				</div>
 			</div>
-			<div class="row mb-4">
-				<div class="col-12">
-					<div class="card">
-						<div class="card-header bg-primary">
-							<h4><i class="fa fa-fw fa-users nt-orange"></i> Signed Up Members</h4>
-						</div>
-						<div class="card-body">
-							<div class="col-12">
-								{% all_people as people %}
-								{% include 'ts_training/include/plan-people-list.html' %}
+			{% if object.pk %}
+				<div class="row mb-4">
+					<div class="col-12">
+						<div class="card">
+							<div class="card-header bg-primary">
+								<h4><i class="fa fa-fw fa-users nt-orange"></i> Signed Up Members</h4>
+							</div>
+							<div class="card-body">
+								<div class="col-12">
+									{% all_people as people %}
+									{% include 'ts_training/include/plan-people-list.html' %}
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			{% endif %}
 		</div>
 		<div class="card-footer bg-primary">
 			<div class="row">

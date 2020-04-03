@@ -76,8 +76,8 @@
 							</div>
 							<div class="card-body">
 								{% with object.signed_up.all as people %}
-									{% if people is None %}
-										<p> Noone has signed up yet!</p>
+									{% if not people %}
+										<p class="text-center text-muted"><i class="fa fa-info-circle fa-fw"></i> No-one has signed up yet.</p>
 									{% else %}
 										<!-- People -->
 										<div class="row" id="peopleList">
@@ -95,18 +95,23 @@
 						</div>
 					</div>
 				</div>
-				<div class="row mb-4">
-					<div class="col-12">
-						<div class="card">
-							<div class="card-header bg-primary">
-								<p>Test</p>
-							</div>
-							<div class="card-body">
-								<a class="" href="{% url 'ts_training:CreateSession' object.pk %}">Test</a>
+				{% if user == object.trainer %}
+					<div class="row mb-4">
+						<div class="col-12">
+							<div class="card">
+								<div class="card-header bg-primary">
+									<h4><i class="fa fa-fw fas fa-clipboard-check nt-orange"></i> Complete Session</h4>
+								</div>
+								<div class="card-body mx-auto">
+									<a class="btn btn-secondary btn-lg" href="{% url 'ts_training:CreateSession' object.pk %}" data-toggle="tooltip" data-placement="top" data-original-title="If you have completed this training session, click me!">
+										<i class="fa fa-fw fa-lg fa-check"></i> 
+										<span class="d-sm-none d-lg-inline">Complete Training</span>
+									</a>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
+				{% endif %}
 			{% endif %}
 			{% if not user == object.trainer %}
 			<div class="row">
@@ -118,12 +123,12 @@
 						<div class="card-body mx-auto">
 							{% if not user in object.signed_up.all%}
 								{% if object.slots > 0 %}
-									<a href="{% url 'ts_training:Signup' object.pk %}" class="btn btn-secondary btn-lg"><i class="fa fa-fw fa-lg fa-clipboard"></i> <span class="d-sm-none d-lg-inline">Sign Up</span></a>
+									<a href="{% url 'ts_training:Signup' object.pk %}" class="btn btn-secondary btn-lg"><i class="fa fa-fw fa-lg fas fa-clipboard-list"></i> <span class="d-sm-none d-lg-inline">Sign Up</span></a>
 								{% else %}
 									<p>This training session is full. Please sign up for another session.</p>
 								{% endif %}
 							{% else %}
-							<a href="{% url 'ts_training:Signup' object.pk %}" class="btn btn-secondary btn-lg"><i class="fa fa-fw fa-lg fa-clipboard"></i> <span class="d-sm-none d-lg-inline">Cancel Sign Up</span></a>
+							<a href="{% url 'ts_training:Signup' object.pk %}" class="btn btn-secondary btn-lg"><i class="fa fa-fw fa-lg fas fa-clipboard-list"></i> <span class="d-sm-none d-lg-inline">Cancel Sign Up</span></a>
 							{% endif %}
 						</div>
 					</div>

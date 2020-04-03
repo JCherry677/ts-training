@@ -235,13 +235,14 @@ class Training_session(models.Model):
     )
 
     def __str__(self):
-        trainees = []
-        for person in self.trainee.all():
-            name = str.title(person.first_name) + ' ' + (str.title(person.last_name))
-            trainees.append(name)
-        string = str.title(self.trainer.first_name + ' ' + self.trainer.last_name) + ' taught ' \
-                 + ', '.join(map(str, trainees))
-        return string
+        return 'A Training Session'
+        #trainees = []
+        #for person in self.trainee.all():
+        #    name = str.title(person.first_name) + ' ' + (str.title(person.last_name))
+        #    trainees.append(name)
+        #string = str.title(self.trainer.first_name + ' ' + self.trainer.last_name) + ' taught ' \
+        #         + ', '.join(map(str, trainees))
+        #return string
 
     def get_absolute_url(self):
      	return reverse('ts_training:Sessions', kwargs={'pk': self.pk})
@@ -260,6 +261,4 @@ class Planned_session(models.Model):
     signed_up = models.ManyToManyField(Person, related_name="signed_up", blank=True)
 
     def __str__(self):
-        words = 'Session has '+ str(self.slots)  + ' slots available on ' + str(self.date)
-        return words
-    
+        return 'A Planned Session' #'Session has '+ str(self.slots)  + ' slots available on ' + str(self.date)

@@ -168,16 +168,17 @@ class SignupView(SuccessMessageMixin, UpdateView):
 	def get_success_url(self):
 		return reverse_lazy('ts_training:PlanSingle', kwargs={'pk': self.object.pk})
 
+#This makes a planned session a Training session
 def CreateSessionView(request, pk):
 	#Doesn't Transfer Training points and People
 	plan = Planned_session.objects.get(pk=pk)
-	session = Training_session()
-	session.pk = None
-	session.trainer=plan.trainer
-	session.date=plan.date
-	session.save()
+	session = Training_session.objects.create(
+		trainer=plan.trainer,
+		date=plan.date,)
+	session.trainingId.set(plan.trainingId.all())
+	session.trainee.set(plan.signed_up.all())
 	plan.delete()
-	return HttpResponseRedirect(reverse('ts_training:SessionEdit', args=(session.pk,)))
+	return HttpResponseRedirect(reverse('ts_training:SessionSingle', args=(session.pk,)))
 
 
 # Auth Views
